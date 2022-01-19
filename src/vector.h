@@ -12,3 +12,4 @@ typedef struct {
 
 Vector scale_vector(const double, const Vector);
 Point add_point_vector(const Point, const Vector);
+double points_distance(const Point, const Point);

@@ -14,3 +14,10 @@ Point add_point_vector(const Point p, const Vector v) {
         .y = p.y + v.y,
     };
 }
+
+double points_distance(const Point p1, const Point p2) {
+    const double x = p2.x - p1.x;
+    const double y = p2.y - p1.y;
+
+    return sqrt((x * x) + (y * y));
+}
