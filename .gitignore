@@ -1,0 +1,19 @@
+# Ingore all
+*
+
+# Unignore all with extensions
+!*.*
+# Unignore all folders
+!*/
+# Unignore makefile
+!Makefile
+
+deterministic.*
+
+*.out
+
+*.o
+*.tar.gz
+
+*.zip
+*.csv
