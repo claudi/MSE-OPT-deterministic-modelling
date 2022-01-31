@@ -17,3 +17,5 @@ deterministic.*
 
 *.zip
 *.csv
+
+doc/
