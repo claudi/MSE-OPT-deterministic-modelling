@@ -21,3 +21,10 @@ double points_distance(const Point p1, const Point p2) {
 
     return sqrt((x * x) + (y * y));
 }
+
+double scalar_product(const Vector v1, const Vector v2) {
+    const double x = v1.x * v2.x;
+    const double y = v1.y * v2.y;
+
+    return x + y;
+}
