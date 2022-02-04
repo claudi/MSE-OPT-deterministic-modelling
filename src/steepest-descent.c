@@ -1,30 +1,9 @@
+#include <stdio.h>
 #include "function.h"
 #include "vector.h"
-#include <stdio.h>
 
-const double tolerance = 1E-3;
-const unsigned max_iters = 100;
-
-double choose_alpha(const Point p, const Vector d) {
-    const double sigma = 0.5;
-    const double rho = 0.5;
-    double alpha = 1;
-
-    const double scalar_prod = scalar_product(gradient_F(p), d);
-
-    double x = function_F(p);
-
-    Point p_new = add_point_vector(p, scale_vector(alpha, d));
-    double x_new = function_F(p);
-    while((x_new > x + sigma * alpha * scalar_prod)) {
-        alpha *= rho;
-
-        p_new = add_point_vector(p, scale_vector(alpha, d));
-        x_new = function_F(p_new);
-    }
-
-    return alpha;
-}
+static const double tolerance = 1E-6;
+static const unsigned max_iters = 10000;
 
 Point steepest_descent(Point p) {
     Point p_new = p;
