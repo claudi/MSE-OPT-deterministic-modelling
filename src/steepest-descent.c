@@ -15,10 +15,12 @@ Point steepest_descent(Point p) {
         const double alpha = choose_alpha(p, d);
 
         p_new = add_point_vector(p, scale_vector(alpha, d));
-        printf("%d: %lf %lf\n", iter, p_new.x, p_new.y);
+        // printf("%d: %lf %lf\n", iter, p_new.x, p_new.y);
 
         iter++;
     } while((points_distance(p, p_new) > tolerance) && (iter < max_iters));
+
+    printf("Steepest descent total iters: %d\n", iter);
 
     return p_new;
 }
