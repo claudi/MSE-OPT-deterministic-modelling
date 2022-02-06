@@ -28,3 +28,10 @@ double scalar_product(const Vector v1, const Vector v2) {
 
     return x + y;
 }
+
+Vector add_vectors(const Vector v1, const Vector v2) {
+    return (Vector) {
+        .x = v1.x + v2.x,
+        .y = v1.y + v2.y,
+    };
+}
