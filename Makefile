@@ -1,41 +1,49 @@
+PROGNAME = deterministic
 SRCDIR = src/
 OBJDIR = obj/
-EXECUTS = deterministic deterministic.debug deterministic.profile
+EXECUTS = $(PROGNAME) $(PROGNAME).profile
 
 SOURCES = $(wildcard $(SRCDIR)*.c)
 DEPENDS	= $(wildcard $(SRCDIR)*.h)
-OBJECTS = $(patsubst $(SRCDIR)%,$(OBJDIR)%,$(SOURCES:.c=.o)) $(wildcard $(OBJDIR)*.o)
+OBJECTS = $(patsubst $(SRCDIR)%,$(OBJDIR)%,$(SOURCES:.c=.o))
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Wshadow -pedantic -Ofast
+CFLAGS = -Wall -Wextra -Wshadow -std=c11 -pedantic -Ofast -fopenmp
 LFLAGS = -lm
 CDEBUGFLAGS = -D DEBUG -ggdb -g3 -O0
 CPROFILEFLAGS = -pg
 
-deterministic: $(OBJECTS)
+$(PROGNAME): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LFLAGS)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(DEPENDS)
+	@mkdir -pv $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: release
+release: release.tar.gz
 
 release.tar.gz: $(SOURCES) $(DEPENDS) Makefile README.rst
 	tar -czvf $@ $^
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJECTS) $(EXECUTS) release.tar.gz *.out
+	$(RM) $(OBJECTS)
+	$(RM) $(EXECUTS)
+	$(RM) $(HELPERS) gmon.out
+	$(RM) release.tar.gz
+
+.PHONY: bin
+bin: $(EXECUTS)
+
+.PHONY: help
+help: $(HELPERS)
 
 .PHONY: all
-all: $(EXECUTS)
-
-.PHONY: debug
-debug: deterministic.debug
-
-deterministic.debug: $(SOURCES) $(DEPENDS)
-	$(CC) $(CFLAGS) $(CDEBUGFLAGS) -o $@ $(SOURCES) $(LFLAGS)
+all: bin help
 
 .PHONY: profile
-profile: deterministic.profile
+profile: $(PROGNAME).profile
 
-deterministic.profile: $(SOURCES) $(DEPENDS)
+$(PROGNAME).profile: $(SOURCES) $(DEPENDS)
 	$(CC) $(CFLAGS) $(CPROFILEFLAGS) -o $@ $(SOURCES) $(LFLAGS)
